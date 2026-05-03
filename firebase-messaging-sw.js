@@ -1,3 +1,11 @@
+self.addEventListener("install", () => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", () => {
+  self.clients.claim();
+});
+
 importScripts("https://www.gstatic.com/firebasejs/12.12.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/12.12.1/firebase-messaging-compat.js");
 
