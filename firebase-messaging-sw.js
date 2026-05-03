@@ -58,7 +58,8 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
-  const title = payload.notification?.title || "Care";
+  //const title = payload.notification?.title || "Care";
+  const title = "";
   const options = {
     body: payload.notification?.body || "Nouvelle notification",
     icon: "./icon-192.png",
