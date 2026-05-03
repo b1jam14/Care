@@ -1,66 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Ma PWA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA -->
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#000000">
+  <title>Care</title>
+
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <link rel="icon" href="./icon-192.png" />
 </head>
 
 <body>
+  <h1>Care</h1>
+  <p>Bienvenue sur l’application Care.</p>
 
-  <h1>Ma PWA 🚀</h1>
-  <button id="enableNotifications">Activer les notifications</button>
+  <button id="notificationBtn">
+    Activer les notifications
+  </button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-messaging.js";
+  <script>
+    // Enregistrement du service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("./firebase-messaging-sw.js")
+        .then(() => {
+          console.log("Service worker enregistré");
+        })
+        .catch((error) => {
+          console.error("Erreur service worker :", error);
+        });
+    }
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAOlAIN2F0KZqNuvoh5ohlT66OdOhzz7P8",
-      authDomain: "care-2cbc1.firebaseapp.com",
-      projectId: "care-2cbc1",
-      storageBucket: "care-2cbc1.firebasestorage.app",
-      messagingSenderId: "102325538795",
-      appId: "1:102325538795:web:51648a53db1cc0f1d093ae"
-    };
+    // Demande d'autorisation pour les notifications
+    const notificationBtn = document.getElementById("notificationBtn");
 
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    async function enableNotifications() {
-      const permission = await Notification.requestPermission();
-
-      if (permission !== "granted") {
-        alert("Notifications refusées");
+    notificationBtn.addEventListener("click", async () => {
+      if (!("Notification" in window)) {
+        alert("Les notifications ne sont pas supportées par ce navigateur.");
         return;
       }
 
-      const registration = await navigator.serviceWorker.register(
-        "/Care/firebase-messaging-sw.js"
-      );
+      const permission = await Notification.requestPermission();
 
-      const token = await getToken(messaging, {
-        vapidKey: "BNVaU-yEJWK5gp6p1km6mZMc95l769Vji6j4GS7tVId7Q6ZCmYCGS0_brkDpgBI9hc4GIrO4pkgQIK_-ySgFAGg",
-        serviceWorkerRegistration: registration
-      });
-
-      console.log("FCM token:", token);
-      alert("Notifications activées !");
-    }
-
-    document
-      .getElementById("enableNotifications")
-      .addEventListener("click", enableNotifications);
-
-    onMessage(messaging, payload => {
-      console.log("Message reçu:", payload);
-      alert(payload.notification?.title || "Notification reçue");
+      if (permission === "granted") {
+        alert("Notifications activées !");
+      } else {
+        alert("Notifications refusées.");
+      }
     });
   </script>
-
 </body>
 </html>
