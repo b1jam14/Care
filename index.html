@@ -25,36 +25,43 @@
     Activer les notifications
   </button>
 
-  <script>
-    // Enregistrement du service worker
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("./firebase-messaging-sw.js")
-        .then(() => {
-          console.log("Service worker enregistré");
-        })
-        .catch((error) => {
-          console.error("Erreur service worker :", error);
-        });
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-messaging.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOlAIN2F0KZqNuvoh5ohlT66OdOhzz7P8",
+    authDomain: "care-2cbc1.firebaseapp.com",
+    projectId: "care-2cbc1",
+    storageBucket: "care-2cbc1.firebasestorage.app",
+    messagingSenderId: "102325538795",
+    appId: "1:102325538795:web:51648a53db1cc0f1d093ae",
+    measurementId: "G-BGRDNMT659"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  const notificationBtn = document.getElementById("notificationBtn");
+
+  notificationBtn.addEventListener("click", async () => {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      alert("Notifications refusées");
+      return;
     }
 
-    // Demande d'autorisation pour les notifications
-    const notificationBtn = document.getElementById("notificationBtn");
+    const registration = await navigator.serviceWorker.register("./firebase-messaging-sw.js");
 
-    notificationBtn.addEventListener("click", async () => {
-      if (!("Notification" in window)) {
-        alert("Les notifications ne sont pas supportées par ce navigateur.");
-        return;
-      }
-
-      const permission = await Notification.requestPermission();
-
-      if (permission === "granted") {
-        alert("Notifications activées !");
-      } else {
-        alert("Notifications refusées.");
-      }
+    const token = await getToken(messaging, {
+      vapidKey: "BNVaU-yEJWK5gp6p1km6mZMc95l769Vji6j4GS7tVId7Q6ZCmYCGS0_brkDpgBI9hc4GIrO4pkgQIK_-ySgFAGg",
+      serviceWorkerRegistration: registration
     });
-  </script>
+
+    console.log("🔥 TOKEN FCM :", token);
+    alert("Token généré (regarde la console)");
+  });
+</script>
 </body>
 </html>
