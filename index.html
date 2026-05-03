@@ -30,6 +30,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-messaging.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAOlAIN2F0KZqNuvoh5ohlT66OdOhzz7P8",
@@ -37,25 +38,36 @@
     projectId: "care-2cbc1",
     storageBucket: "care-2cbc1.firebasestorage.app",
     messagingSenderId: "102325538795",
-    appId: "1:102325538795:web:51648a53db1cc0f1d093ae"
+    appId: "1:102325538795:web:51648a53db1cc0f1d093ae",
+    measurementId: "G-BGRDNMT659"
   };
 
   const app = initializeApp(firebaseConfig);
   const messaging = getMessaging(app);
+  const db = getFirestore(app);
 
   document.getElementById("notificationBtn").addEventListener("click", async () => {
     const permission = await Notification.requestPermission();
 
-    if (permission !== "granted") return;
+    if (permission !== "granted") {
+      alert("Notifications refusées");
+      return;
+    }
 
     const registration = await navigator.serviceWorker.register("./firebase-messaging-sw.js");
 
     const token = await getToken(messaging, {
-      vapidKey: "BNVaU-yEJWK5gp6p1km6mZMc95l769Vji6j4GS7tVId7Q6ZCmYCGS0_brkDpgBI9hc4GIrO4pkgQIK_-ySgFAGg",
+      vapidKey: "BNVaU-yEJWK5gp6p1km6mZMc95l769Vji6mZMc95l769Vji6j4GS7tVId7Q6ZCmYCGS0_brkDpgBI9hc4GIrO4pkgQIK_-ySgFAGg",
       serviceWorkerRegistration: registration
     });
 
-    document.getElementById("token").textContent = token;
+    await setDoc(doc(db, "tokens", token), {
+      token: token,
+      createdAt: serverTimestamp(),
+      platform: navigator.userAgent
+    });
+
+    alert("Notifications activées !");
   });
 </script>
 </body>
