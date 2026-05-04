@@ -8,7 +8,7 @@
     --text: rgb(28, 28, 30);
     --bg: #ffffff;
 
-    --header-bg: rgba(255, 255, 255, 0.8);
+    --header-bg: #ffffff; /* solid */
     --border: rgba(0,0,0,0.05);
 
     --radius: 14px;
@@ -22,7 +22,7 @@
         --text: #f1f5f9;
         --bg: #0f172a;
 
-        --header-bg: rgba(15, 23, 42, 0.8);
+        --header-bg: #0f172a; /* solid */
         --border: rgba(255,255,255,0.05);
     }
 }
@@ -56,9 +56,7 @@ body {
     text-align: center;
     padding: 16px 20px;
 
-    background: var(--header-bg);
-    backdrop-filter: blur(12px);
-
+    background: var(--header-bg); /* now solid */
     border-bottom: 1px solid var(--border);
 }
 
