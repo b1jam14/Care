@@ -18,8 +18,10 @@
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background-color: rgb(242, 242, 247);
+    padding: 16px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    background-color: #ffffff;
     color: var(--text);
 }
 
@@ -34,10 +36,10 @@ body {
     }
 }
 
-@media (max-width: 600px) {
-    th, td {
-        padding: 10px;
-        font-size: 12px;
+@media (prefers-color-scheme: dark) {
+    .app-header {
+        background: rgba(15, 23, 42, 0.7);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 }
 
@@ -50,21 +52,22 @@ body {
 }
 
 .app-header {
+    position: sticky;
     top: 0;
 
-    color: var(--green);
     text-align: center;
-    
     padding: 16px 20px;
-    
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 35px;
+    color: var(--green);
+    font-size: 45px;
 }
 
 .btn {
@@ -81,46 +84,6 @@ body {
     transform: translateY(-1px);
 }
 
-.table-container {
-    background: var(--card);
-    border-radius: 14px;
-    overflow: hidden;
-
-    max-width: 500px;
-    margin: 0 auto;
-    box-shadow: var(--shadow);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 14px;
-    text-align: center;
-    border: none;
-}
-
-th {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    background-color: rgb(248, 248, 248);
-}
-
-.status {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-block;
-    transition: transform 0.2s ease;
-}
-
-.status:hover {
-    transform: scale(1.2);
-}
-
 .progress-track {
     width: 100%;
     height: 8px;
@@ -132,11 +95,46 @@ th {
 .progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #22c55e, #16a34a);
+    background: linear-gradient(90deg, var(--green), #16a34a);
     transition: width 0.4s ease;
 }
 
-.green { background-color: var(--green);}
-.orange { background-color: var(--orange);}
-.red { background-color: var(--red);}
-.grey { background-color: var(--grey);}
+.heatmaps {
+    display: grid;
+    gap: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.heatmap h3 {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    gap: 4px;
+}
+
+.cell {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: #e5e7eb;
+
+    opacity: 0;
+    transform: scale(0.6);
+
+    transition: all 0.25s ease;
+}
+
+.cell.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.c0 { background: var(--grey); } /* gris */
+.c1 { background: var(--red); } /* rouge */
+.c2 { background: var(--orange); } /* orange */
+.c3 { background: var(--green); } /* vert */

@@ -31,17 +31,17 @@ export async function fetchCareData() {
 }
 
 export function generateDateRange() {
-    const year = new Date().getFullYear();
+    const year = new Date().getUTCFullYear();
 
-    const start = new Date(year, 4, 2);
-    const end = new Date(year, 6, 1);
+    const start = new Date(Date.UTC(year, 4, 1));
+    const end = new Date(Date.UTC(year, 5, 30));
 
     const dates = [];
-    const current = new Date(start);
+    let current = new Date(start);
 
-    while (current.getTime() <= end.getTime()) {
-        dates.push(new Date(current));
-        current.setDate(current.getDate() + 1);
+    while (current <= end) {
+        dates.push(current.toISOString().split("T")[0]); // ✔ STRING
+        current.setUTCDate(current.getUTCDate() + 1);
     }
 
     return dates;
