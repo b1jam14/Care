@@ -60,10 +60,31 @@ body {
     border-bottom: 1px solid var(--border);
 }
 
-.app-header h1 {
+.header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+
+    display: block; /* 👈 IMPORTANT */
+    transform: translateY(-4px);
+}
+
+.app-title {
     margin: 0;
+    font-size: 34px;
+    font-weight: 700;
     color: var(--green);
-    font-size: 60px;
+    letter-spacing: -0.5px;
+
+    line-height: 1; /* 👈 IMPORTANT */
 }
 
 .btn {
