@@ -3,30 +3,32 @@ import { initNotifications } from "./notifications.js";
 import { updateTimeProgress } from "./progress.js";
 import { renderAllHeatmaps } from "./heatmap.js";
 import {
-    initParse,
-    fetchCareData,
-    generateDateRange,
-    buildDataMap
+  initParse,
+  fetchCareData,
+  generateDateRange,
+  buildDataMap
 } from "./api.js";
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    initNotifications(messaging);
+  initParse();
+  document.body.classList.add("loading");
 
-    updateTimeProgress();
+  fetchCareData()
+    .then(data => {
+      const allDates = generateDateRange();
+      const dataMap = buildDataMap(data);
+      renderAllHeatmaps(dataMap);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  
+  document.body.classList.remove("loading");
 
-    initParse();
+  initNotifications(messaging);
 
-    fetchCareData()
-      .then(data => {
-        const allDates = generateDateRange();
-        const dataMap = buildDataMap(data);
-        renderAllHeatmaps(dataMap);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
+  updateTimeProgress();
 });
