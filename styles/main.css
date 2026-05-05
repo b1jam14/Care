@@ -74,7 +74,7 @@ body.loading {
     object-fit: contain;
 
     display: block; /* 👈 IMPORTANT */
-    transform: translateY(-2px);
+    transform: translateY(0px);
 }
 
 .app-title {
